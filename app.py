@@ -1,11 +1,39 @@
 """Streamlit UI — minimal four-panel layout for the Production Assistant MVP."""
+import os
 from datetime import datetime
 
 import streamlit as st
 
+st.set_page_config(page_title="Production Issue Resolution Assistant", layout="wide")
+
+# Bridge Streamlit Cloud secrets into env so llm_client (and dotenv locally) both work.
+def _secret(name: str, default: str = "") -> str:
+    try:
+        return st.secrets[name]
+    except (KeyError, FileNotFoundError, Exception):
+        return default
+
+_or_key = _secret("OPENROUTER_API_KEY")
+if _or_key:
+    os.environ["OPENROUTER_API_KEY"] = _or_key
+
+# Password gate. Skipped if APP_PASSWORD is not configured (local dev convenience).
+_app_password = _secret("APP_PASSWORD")
+if _app_password:
+    if not st.session_state.get("auth_ok"):
+        st.title("Production Issue Resolution Assistant")
+        st.caption("This demo is gated. Enter the access password.")
+        pw = st.text_input("Password", type="password")
+        if pw:
+            if pw == _app_password:
+                st.session_state["auth_ok"] = True
+                st.rerun()
+            else:
+                st.error("Incorrect password.")
+        st.stop()
+
 from pipeline.orchestrator import run_pipeline
 
-st.set_page_config(page_title="Production Issue Resolution Assistant", layout="wide")
 st.title("Production Issue Resolution Assistant")
 st.caption("Chorus AI Systems — three-stage pipeline (Triage → Generate → Verify) with independent Python verification.")
 
