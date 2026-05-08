@@ -10,12 +10,29 @@ st.set_page_config(page_title="Production Issue Resolution Assistant", layout="w
 def _secret(name: str, default: str = "") -> str:
     try:
         return st.secrets[name]
-    except (KeyError, FileNotFoundError, Exception):
+    except KeyError:
+        return default
+    except (FileNotFoundError, Exception):
         return default
 
-_or_key = _secret("OPENROUTER_API_KEY")
+def _secret_keys() -> list:
+    try:
+        return list(st.secrets.keys())
+    except Exception:
+        return []
+
+_or_key = _secret("OPENROUTER_API_KEY") or os.environ.get("OPENROUTER_API_KEY", "")
 if _or_key:
     os.environ["OPENROUTER_API_KEY"] = _or_key
+else:
+    st.error(
+        "OPENROUTER_API_KEY is not visible to the app.\n\n"
+        f"Secret keys this app can see: {_secret_keys() or '(none — st.secrets is empty or unreadable)'}\n\n"
+        "Fixes: (1) confirm the secret name is exactly `OPENROUTER_API_KEY` (case-sensitive, no spaces); "
+        "(2) save the secrets and reboot the app from the ⋮ menu on Streamlit Cloud; "
+        "(3) re-check the TOML syntax: `OPENROUTER_API_KEY = \"sk-or-...\"` (double quotes, no trailing comma)."
+    )
+    st.stop()
 
 # Password gate. Skipped if APP_PASSWORD is not configured (local dev convenience).
 _app_password = _secret("APP_PASSWORD")
