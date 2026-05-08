@@ -1,0 +1,42 @@
+[
+  {
+    "id": "STD-001",
+    "title": "Throughput Baseline Thresholds",
+    "description": "Each line has a per-product throughput baseline (% of nameplate). Sustained throughput below 80% of baseline for 30+ minutes constitutes a Critical breach. 80-90% is Warning. Investigate equipment, staffing, and material flow before escalating to maintenance."
+  },
+  {
+    "id": "STD-002",
+    "title": "Defect Rate Response Protocol",
+    "description": "Defect rate above 1.5x the line baseline triggers immediate QC sampling of the last 200 units. Above 2.0x baseline, halt the line and inspect tooling, thread tension, and operator station. Above 3.0x baseline, escalate to plant manager."
+  },
+  {
+    "id": "STD-003",
+    "title": "Supplier Delay Escalation",
+    "description": "Material arrival more than 2 hours past expected_start time on a PWO requires immediate notification to procurement and the line scheduler. Delays over 4 hours require a written supplier non-conformance and rescheduling of dependent PWOs."
+  },
+  {
+    "id": "STD-004",
+    "title": "Safety Incident Reporting",
+    "description": "Any safety incident (near-miss, injury, equipment hazard) must be logged within 1 hour. If safety_incidents_this_week >= 1 on a line, the line lead must conduct a 5-min toolbox safety review at the start of the next shift and document it."
+  },
+  {
+    "id": "STD-005",
+    "title": "Equipment Downtime Triage",
+    "description": "Downtime exceeding 60 min in a single shift requires a maintenance work request and root-cause note. Cumulative downtime above 90 min triggers a preventive maintenance window for the line within 48 hours."
+  },
+  {
+    "id": "STD-006",
+    "title": "Quality Threshold Variance Protocol",
+    "description": "When current defect_rate_pct exceeds baseline by more than 0.5 absolute percentage points but stays under the 1.5x trigger of STD-002, increase QC inspection frequency from 1-in-50 to 1-in-20 for the next 4 hours."
+  },
+  {
+    "id": "STD-007",
+    "title": "PWO Start-Time Compliance",
+    "description": "Production Work Orders are expected to start within 15 minutes of their expected_start time. Deviations between 15-60 min require line-lead acknowledgement; deviations over 60 min require PWO re-sequencing with the scheduler."
+  },
+  {
+    "id": "STD-008",
+    "title": "Operator Station Changeover Standards",
+    "description": "Product changeovers on a line must complete within 25 minutes. Changeovers exceeding this duration are a likely contributor to throughput drops within the first 2 hours of a shift and should be the first hypothesis investigated for early-shift output drops."
+  }
+]
